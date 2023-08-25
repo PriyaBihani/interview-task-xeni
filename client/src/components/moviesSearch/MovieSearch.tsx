@@ -5,13 +5,11 @@ import { fetchMovies } from "../../redux/features/movies/slice";
 import MovieSearchBar from "./MovieSearchBar";
 import MovieSort from "./MovieSort";
 import MovieTileView from "../MovieTileView";
-import { Movie, MoviesState } from "../../types/movies";
+import { MoviesState } from "../../types/movies";
 import { LoadingState } from "../../types/loading";
+import { resetMovies } from "../../redux/features/movies/slice";
 
 const MovieSearch: React.FC = () => {
-  const [query, setQuery] = useState<string>("");
-  const [sort, setSort] = useState<string>("popularity.desc");
-
   const dispatch = useDispatch();
   const { movies, allDataLoaded }: MoviesState = useSelector(
     (state: RootState) => state.movie
@@ -19,6 +17,8 @@ const MovieSearch: React.FC = () => {
   const { isLoading }: LoadingState = useSelector(
     (state: RootState) => state.loading
   );
+  const [query, setQuery] = useState<string>("");
+  const [sort, setSort] = useState<string>("");
 
   useEffect(() => {
     dispatch(
@@ -32,10 +32,12 @@ const MovieSearch: React.FC = () => {
   }, [dispatch, query, sort]);
 
   const handleSearch = (query: string) => {
+    dispatch(resetMovies());
     setQuery(query);
   };
 
   const handleSortChange = (sort: string) => {
+    dispatch(resetMovies());
     setSort(sort);
   };
 
@@ -54,8 +56,10 @@ const MovieSearch: React.FC = () => {
     <>
       <div className="container mx-auto my-8">
         <div className="flex justify-between items-center mb-8">
-          <MovieSearchBar onSearch={handleSearch} />
-          <MovieSort onSortChange={handleSortChange} />
+          {sort == "" && <MovieSearchBar onSearch={handleSearch} />}
+          {query == "" && (
+            <MovieSort sortText={sort} onSortChange={handleSortChange} />
+          )}
         </div>
         {isLoading && <p>Loading...</p>}
         {movies?.length && movies.length == 0 && <p>No movies</p>}

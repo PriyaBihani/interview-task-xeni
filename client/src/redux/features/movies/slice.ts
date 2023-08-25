@@ -43,7 +43,12 @@ const initialState: MoviesState = {
 const moviesSlice = createSlice({
   name: "movies",
   initialState,
-  reducers: {},
+  reducers: {
+    resetMovies: (state) => {
+      state.movies = [];
+      state.allDataLoaded = false;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(fetchMovies.fulfilled, (state, action) => {
       state.movies = [...state.movies, ...action.payload.movies];
@@ -52,4 +57,5 @@ const moviesSlice = createSlice({
   },
 });
 
+export const { resetMovies } = moviesSlice.actions;
 export default moviesSlice.reducer;

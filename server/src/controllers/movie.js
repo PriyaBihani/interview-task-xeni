@@ -3,21 +3,18 @@ import { BASE_URL } from "../utils/constants";
 
 export const getMovies = async (req, res) => {
   try {
-    const {
-      cursor = 0,
-      limit = 10,
-      sort = "popularity.desc",
-      search = "",
-    } = req.query;
+    const { cursor = 0, limit = 10, sort = "", search = "" } = req.query;
 
     const queryParams = {
       api_key: process.env.MOVIE_DB_API_KEY,
       page: Math.floor(cursor / limit) + 1,
-      sort_by: sort,
-      query: search,
+      ...(search != "" ? { query: search } : { sort_by: sort }),
     };
 
-    const url = `${BASE_URL}/discover/movie`;
+    const url =
+      search.trim() != ""
+        ? `${BASE_URL}/search/movie`
+        : `${BASE_URL}/discover/movie`;
     if (queryParams.page >= 20) {
       return res.status(200).json({
         message: "Movies fetched successfully",

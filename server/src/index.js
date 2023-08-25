@@ -1,10 +1,12 @@
 import dotenv from "dotenv";
 dotenv.config("../.env");
 
+import cors from "cors";
 import express from "express";
 import movieRouter from "./routes/movie.js";
 const app = express();
 
+app.use(cors());
 app.use(express.json());
 app.use("/movies", movieRouter);
 

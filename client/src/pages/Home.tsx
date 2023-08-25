@@ -1,5 +1,11 @@
+import MovieSearch from "../components/MovieSearch";
+
 const Home = () => {
-  return <></>;
+  return (
+    <>
+      <MovieSearch />
+    </>
+  );
 };
 
 export default Home;

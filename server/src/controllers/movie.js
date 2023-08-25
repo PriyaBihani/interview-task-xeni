@@ -1,8 +1,63 @@
+import axios from "axios";
+
+const BASE_URL = "https://api.themoviedb.org/3/movie";
+
 export const getMovies = async (req, res) => {
-    console.log("getMovies")
-}
+  try {
+    const { cursor = 0, count = 10, sort = 1, search = "" } = req.query;
+
+    const queryParams = {
+      api_key: process.env.MOVIE_Db_API_KEY,
+      page: Math.floor(cursor / count) + 1,
+      sort_by: sort,
+      query: search,
+    };
+
+    const url = `${BASE_URL}/popular`;
+
+    const response = await axios.get(url, { params: queryParams });
+    const movies = response.data.results;
+
+    const liteMovies = movies.map((movie) => ({
+      id: movie.id,
+      title: movie.title,
+      releaseYear: movie.release_date.substring(0, 4),
+      posterUrl: `https://image.tmdb.org/t/p/w500${movie.poster_path}`,
+    }));
+
+    return res.status(200).json({
+      message: "Movies fetched successfully",
+      success: true,
+      data: liteMovies,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+      success: false,
+    });
+  }
+};
 
 export const getMovie = async (req, res) => {
-    console.log("getMovie")
-}
+  try {
+    const { id } = req.params;
+    const queryParams = {
+      api_key: process.env.MOVIE_DB_API_KEY,
+    };
+    const url = `${BASE_URL}/${id}`;
+    console.log(url);
+    const response = await axios.get(url, { params: queryParams });
+    console.log(response);
 
+    res.status(200).json({
+      message: "Movies fetched successfully",
+      success: true,
+      data: response.data,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+      success: false,
+    });
+  }
+};

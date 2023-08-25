@@ -1,13 +1,12 @@
 import axios from "axios";
-
-const BASE_URL = "https://api.themoviedb.org/3/movie";
+import { BASE_URL } from "../utils/constants";
 
 export const getMovies = async (req, res) => {
   try {
     const { cursor = 0, count = 10, sort = 1, search = "" } = req.query;
 
     const queryParams = {
-      api_key: process.env.MOVIE_Db_API_KEY,
+      api_key: process.env.MOVIE_DB_API_KEY,
       page: Math.floor(cursor / count) + 1,
       sort_by: sort,
       query: search,
@@ -45,9 +44,7 @@ export const getMovie = async (req, res) => {
       api_key: process.env.MOVIE_DB_API_KEY,
     };
     const url = `${BASE_URL}/${id}`;
-    console.log(url);
     const response = await axios.get(url, { params: queryParams });
-    console.log(response);
 
     res.status(200).json({
       message: "Movies fetched successfully",

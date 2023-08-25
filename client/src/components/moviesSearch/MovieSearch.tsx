@@ -8,6 +8,7 @@ import MovieTileView from "../MovieTileView";
 import { MoviesState } from "../../types/movies";
 import { LoadingState } from "../../types/loading";
 import { resetMovies } from "../../redux/features/movies/slice";
+import { Link } from "react-router-dom";
 
 const MovieSearch: React.FC = () => {
   const dispatch = useDispatch();

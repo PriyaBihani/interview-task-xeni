@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import MovieCard from "./MovieCard";
 import { Movie } from "../types/movies";
+import { Link } from "react-router-dom";
 
 interface MovieTileViewProps {
   movies: Movie[];
@@ -36,12 +37,14 @@ const MovieTileView: React.FC<MovieTileViewProps> = ({
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
       {movies.map((movie, index) => (
-        <div
-          key={movie.id}
-          ref={index === movies.length - 1 ? lastMovieRef : undefined}
-        >
-          <MovieCard movie={movie} />
-        </div>
+        <Link to={`/movies/${movie.id}`}>
+          <div
+            key={movie.id}
+            ref={index === movies.length - 1 ? lastMovieRef : undefined}
+          >
+            <MovieCard movie={movie} />
+          </div>
+        </Link>
       ))}
     </div>
   );

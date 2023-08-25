@@ -3,16 +3,21 @@ import { BASE_URL } from "../utils/constants";
 
 export const getMovies = async (req, res) => {
   try {
-    const { cursor = 0, count = 10, sort = 1, search = "" } = req.query;
+    const {
+      cursor = 0,
+      limit = 10,
+      sort = "popularity.desc",
+      search = "",
+    } = req.query;
 
     const queryParams = {
       api_key: process.env.MOVIE_DB_API_KEY,
-      page: Math.floor(cursor / count) + 1,
+      page: Math.floor(cursor / limit) + 1,
       sort_by: sort,
       query: search,
     };
 
-    const url = `${BASE_URL}/popular`;
+    const url = `${BASE_URL}/discover/movie`;
 
     const response = await axios.get(url, { params: queryParams });
     const movies = response.data.results;
@@ -30,6 +35,7 @@ export const getMovies = async (req, res) => {
       data: liteMovies,
     });
   } catch (error) {
+    console.log(error.message);
     res.status(500).json({
       message: error.message,
       success: false,

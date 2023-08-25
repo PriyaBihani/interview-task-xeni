@@ -10,7 +10,7 @@ import { LoadingState } from "../../types/loading";
 
 const MovieSearch: React.FC = () => {
   const [query, setQuery] = useState<string>("");
-  const [sort, setSort] = useState<string>("vote_average.desc");
+  const [sort, setSort] = useState<string>("popularity.desc");
 
   const dispatch = useDispatch();
   const { movies }: MoviesState = useSelector(
@@ -22,7 +22,14 @@ const MovieSearch: React.FC = () => {
   console.log(movies);
   useEffect(() => {
     console.log(query);
-    dispatch(fetchMovies({ page: 1, limit: 10, sort: -1, search: query }));
+    dispatch(
+      fetchMovies({
+        cursor: 0,
+        limit: 10,
+        sort: sort,
+        search: query,
+      })
+    );
   }, [dispatch, query, sort]);
 
   const handleSearch = (query: string) => {
@@ -34,16 +41,21 @@ const MovieSearch: React.FC = () => {
   };
 
   const handleLoadMore = () => {
-    // if (page < totalPages) {
-    //   dispatch(fetchMovies(query, sort, filter, page + 1));
-    // }
+    dispatch(
+      fetchMovies({
+        cursor: movies?.length || 0,
+        limit: 10,
+        sort: sort,
+        search: query,
+      })
+    );
   };
 
   return (
     <>
       <div className="container mx-auto my-8">
-        <MovieSearchBar onSearch={handleSearch} />
         <div className="flex justify-between items-center mb-8">
+          <MovieSearchBar onSearch={handleSearch} />
           <MovieSort onSortChange={handleSortChange} />
         </div>
         {isLoading && <p>Loading...</p>}

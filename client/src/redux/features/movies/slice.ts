@@ -3,7 +3,7 @@ import { serviceGet } from "../../../utils/api";
 import { Movie, MoviesState } from "../../../types/movies";
 
 interface FetchMoviesParams {
-  page: number;
+  cursor: number;
   limit: number;
   sort: string;
   search: string;
@@ -17,10 +17,10 @@ interface FetchMoviesResponse {
 
 export const fetchMovies: any = createAsyncThunk(
   "movies/fetchMovies",
-  async ({ page, limit, sort, search }: FetchMoviesParams) => {
+  async ({ cursor, limit, sort, search }: FetchMoviesParams) => {
     try {
       const response: FetchMoviesResponse = await serviceGet(
-        `/movies?page=${page}&limit=${limit}&sort=${sort}&search=${search}`
+        `/movies?cursor=${cursor}&limit=${limit}&sort=${sort}&search=${search}`
       );
       return {
         movies: response.data,

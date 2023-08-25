@@ -18,6 +18,13 @@ export const getMovies = async (req, res) => {
     };
 
     const url = `${BASE_URL}/discover/movie`;
+    if (queryParams.page >= 20) {
+      return res.status(200).json({
+        message: "Movies fetched successfully",
+        success: true,
+        data: [],
+      });
+    }
 
     const response = await axios.get(url, { params: queryParams });
     const movies = response.data.results;
@@ -49,7 +56,7 @@ export const getMovie = async (req, res) => {
     const queryParams = {
       api_key: process.env.MOVIE_DB_API_KEY,
     };
-    const url = `${BASE_URL}/${id}`;
+    const url = `${BASE_URL}/movie/${id}`;
     const response = await axios.get(url, { params: queryParams });
 
     res.status(200).json({

@@ -4,17 +4,20 @@ import { Movie } from "../types/movies";
 
 interface MovieTileViewProps {
   movies: Movie[];
+  allDataLoaded: boolean;
   onLoadMore: () => void;
 }
 
 const MovieTileView: React.FC<MovieTileViewProps> = ({
   movies,
   onLoadMore,
+  allDataLoaded,
 }) => {
   const observer = useRef<IntersectionObserver | null>(null);
   const lastMovieRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
+    if (allDataLoaded) return;
     if (observer.current) {
       observer.current.disconnect();
     }
@@ -32,22 +35,14 @@ const MovieTileView: React.FC<MovieTileViewProps> = ({
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-      {movies.length > 0 &&
-        movies.map((movie, index) => {
-          if (index === movies.length - 1) {
-            return (
-              <div key={movie.id} ref={lastMovieRef}>
-                <MovieCard movie={movie} />
-              </div>
-            );
-          } else {
-            return (
-              <div key={movie.id}>
-                <MovieCard movie={movie} />
-              </div>
-            );
-          }
-        })}
+      {movies.map((movie, index) => (
+        <div
+          key={movie.id}
+          ref={index === movies.length - 1 ? lastMovieRef : undefined}
+        >
+          <MovieCard movie={movie} />
+        </div>
+      ))}
     </div>
   );
 };

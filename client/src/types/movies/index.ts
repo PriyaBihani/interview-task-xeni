@@ -6,5 +6,6 @@ export interface Movie {
 }
 
 export interface MoviesState {
-  movies?: Movie[];
+  movies: Movie[] | [];
+  allDataLoaded: boolean;
 }

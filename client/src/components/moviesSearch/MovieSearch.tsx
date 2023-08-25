@@ -13,15 +13,14 @@ const MovieSearch: React.FC = () => {
   const [sort, setSort] = useState<string>("popularity.desc");
 
   const dispatch = useDispatch();
-  const { movies }: MoviesState = useSelector(
+  const { movies, allDataLoaded }: MoviesState = useSelector(
     (state: RootState) => state.movie
   );
   const { isLoading }: LoadingState = useSelector(
     (state: RootState) => state.loading
   );
-  console.log(movies);
+
   useEffect(() => {
-    console.log(query);
     dispatch(
       fetchMovies({
         cursor: 0,
@@ -61,7 +60,11 @@ const MovieSearch: React.FC = () => {
         {isLoading && <p>Loading...</p>}
         {movies?.length && movies.length == 0 && <p>No movies</p>}
         {!isLoading && movies?.length && (
-          <MovieTileView movies={movies} onLoadMore={handleLoadMore} />
+          <MovieTileView
+            allDataLoaded={allDataLoaded}
+            movies={movies}
+            onLoadMore={handleLoadMore}
+          />
         )}
       </div>
     </>

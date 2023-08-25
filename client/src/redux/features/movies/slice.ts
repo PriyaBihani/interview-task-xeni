@@ -24,6 +24,8 @@ export const fetchMovies: any = createAsyncThunk(
       );
       return {
         movies: response.data,
+        ...(!response.data ||
+          (response.data.length === 0 && { allDataLoaded: true })),
       };
     } catch (error) {
       return {
@@ -35,6 +37,7 @@ export const fetchMovies: any = createAsyncThunk(
 
 const initialState: MoviesState = {
   movies: [],
+  allDataLoaded: false,
 };
 
 const moviesSlice = createSlice({
@@ -43,7 +46,8 @@ const moviesSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(fetchMovies.fulfilled, (state, action) => {
-      state.movies = action.payload.movies;
+      state.movies = [...state.movies, ...action.payload.movies];
+      state.allDataLoaded = !!action.payload.allDataLoaded;
     });
   },
 });

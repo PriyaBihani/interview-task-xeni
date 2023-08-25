@@ -4,11 +4,13 @@ dotenv.config("../.env");
 import cors from "cors";
 import express from "express";
 import movieRouter from "./routes/movie.js";
+import userRouter from "./routes/user.js";
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 app.use("/movies", movieRouter);
+app.use("/user", userRouter);
 
 const PORT = process.env.PORT || 8080;
 

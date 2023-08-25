@@ -21,7 +21,6 @@ const MovieSort: React.FC<MovieSortProps> = ({ onSortChange, sortText }) => {
         className="border border-gray-300 rounded-md px-4 py-2"
         value={sortText}
       >
-        <option value="">None </option>
         <option value="popularity.desc">Popularity</option>
         <option value="vote_average.desc">Top Rated</option>
         <option value="release_date.desc">Release Date</option>

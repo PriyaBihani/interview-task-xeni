@@ -1,4 +1,4 @@
-import MovieSearch from "../components/searchMovies/MovieSearch";
+import MovieSearch from "../components/moviesSearch/MovieSearch";
 
 const Home = () => {
   return (

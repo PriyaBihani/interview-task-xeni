@@ -3,7 +3,7 @@ import MovieCard from "./MovieCard";
 import { Movie } from "../types/movies";
 
 interface MovieTileViewProps {
-  movies?: Movie[];
+  movies: Movie[];
   onLoadMore: () => void;
 }
 
@@ -32,8 +32,7 @@ const MovieTileView: React.FC<MovieTileViewProps> = ({
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-      {movies?.length &&
-        movies.length > 0 &&
+      {movies.length > 0 &&
         movies.map((movie, index) => {
           if (index === movies.length - 1) {
             return (

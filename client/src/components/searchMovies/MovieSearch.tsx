@@ -1,18 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../redux/store";
-import { fetchMovies } from "../redux/features/movies/slice";
+import { RootState } from "../../redux/store";
+import { fetchMovies } from "../../redux/features/movies/slice";
 import MovieSearchBar from "./MovieSearchBar";
 import MovieSort from "./MovieSort";
-import MovieTileView from "./MovieTileView";
-import { Movie } from "../redux/features/movies/slice";
+import MovieTileView from "./../MovieTileView";
+import { Movie, MoviesState } from "../../types/movies";
 
 const MovieSearch: React.FC = () => {
   const [query, setQuery] = useState<string>("");
   const [sort, setSort] = useState<string>("vote_average.desc");
 
   const dispatch = useDispatch();
-  const movies: Movie[] = useSelector((state: RootState) => state.movie);
+  const { movies }: MoviesState = useSelector(
+    (state: RootState) => state.movie
+  );
   console.log(movies);
   useEffect(() => {
     console.log(query);
@@ -43,7 +45,7 @@ const MovieSearch: React.FC = () => {
         {/* {isLoading && <p>Loading...</p>}
         {error && <p>Error: {error}</p>}
         {!isLoading && !error && ( */}
-        {/* <MovieTileView movies={movies} onLoadMore={handleLoadMore} /> */}
+        <MovieTileView movies={movies} onLoadMore={handleLoadMore} />
         {/* )} */}
       </div>
       z

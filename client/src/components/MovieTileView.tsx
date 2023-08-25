@@ -1,8 +1,9 @@
 import React, { useEffect, useRef } from "react";
 import MovieCard from "./MovieCard";
+import { Movie } from "../types/movies";
 
 interface MovieTileViewProps {
-  movies: any;
+  movies?: Movie[];
   onLoadMore: () => void;
 }
 
@@ -12,7 +13,7 @@ const MovieTileView: React.FC<MovieTileViewProps> = ({
 }) => {
   const observer = useRef<IntersectionObserver | null>(null);
   const lastMovieRef = useRef<HTMLDivElement | null>(null);
-  console.log("dsf", movies.movies);
+
   useEffect(() => {
     if (observer.current) {
       observer.current.disconnect();
@@ -30,8 +31,9 @@ const MovieTileView: React.FC<MovieTileViewProps> = ({
   }, [onLoadMore]);
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-      {movies.length > 0 &&
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+      {movies?.length &&
+        movies.length > 0 &&
         movies.map((movie, index) => {
           if (index === movies.length - 1) {
             return (

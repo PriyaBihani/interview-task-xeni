@@ -1,22 +1,12 @@
-import { createSlice, createAsyncThunk, AnyAction } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { serviceGet } from "../../../utils/api";
-
-export interface Movie {
-  id: number;
-  posterUrl: string;
-  releaseYear: string;
-  title: string;
-}
+import { Movie, MoviesState } from "../../../types/movies";
 
 interface FetchMoviesParams {
   page: number;
   limit: number;
   sort: string;
   search: string;
-}
-
-interface MoviesState {
-  movies?: Movie[];
 }
 
 interface FetchMoviesResponse {

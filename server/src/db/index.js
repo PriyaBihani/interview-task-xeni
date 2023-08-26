@@ -1,1 +1,1 @@
-export * from "./schema/WatchList.js";
+export * from "./schema/User.js";

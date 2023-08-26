@@ -1,28 +1,26 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { User } from "../../../types/user";
-import { serviceGet } from "../../../utils/api";
+import { serviceGet, servicePost } from "../../../utils/api";
 
 const initialState: User = {
   userId: "",
-  wishlist: [],
+  watchlist: [],
 };
-
-interface FetchTokenResponse {
-  data: string;
-  message: string;
-  success: boolean;
-}
 
 export const getToken: any = async () => {
   try {
     if (localStorage.getItem("userId") === null) {
-      const response: FetchTokenResponse = await serviceGet("/user/token");
+      const response: any = await servicePost("/user/token", {});
       return {
         userId: response.data,
+        watchlist: [],
       };
     } else {
+      const userId = localStorage.getItem("userId");
+      const response: any = await serviceGet(`/watchlist/${userId}`);
       return {
-        userId: localStorage.getItem("userId"),
+        userId: userId,
+        watchlist: response.data,
       };
     }
   } catch (error) {
@@ -40,6 +38,7 @@ const userSlice = createSlice({
     builder.addCase(getToken.fulfilled, (state, action) => {
       localStorage.setItem("userId", action.payload.userId);
       state.userId = action.payload.userId;
+      state.watchlist = action.payload.watchlist;
     });
   },
 });

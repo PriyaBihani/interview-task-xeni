@@ -1,0 +1,48 @@
+import mongoose from "mongoose";
+
+const UserSchema = new mongoose.Schema(
+  {
+    userId: {
+      type: String,
+      unique: true,
+      required: true,
+    },
+    movies: {
+      type: [
+        {
+          id: {
+            type: Number,
+            required: true,
+          },
+          title: {
+            type: String,
+            required: true,
+          },
+          releaseYear: {
+            type: String,
+            required: true,
+          },
+          posterUrl: {
+            type: String,
+            required: true,
+          },
+        },
+      ],
+      default: [],
+    },
+  },
+  { timestamps: true }
+);
+
+UserSchema.statics.exists = async function (userId) {
+  try {
+    console.log("Hy", userId);
+    const user = await this.findOne({ userId: userId });
+    if (!user) throw new Error("User does not exists");
+    return user;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const User = mongoose.model("user", UserSchema);

@@ -7,15 +7,12 @@ const Navbar: React.FC = () => {
       <Link to="/" className="text-white font-medium text-lg">
         Movie Search
       </Link>
-      {/* {isLoggedIn ? (
-        <button onClick={onLogout} className="text-white font-medium">
-          Logout
-        </button>
-      ) : (
-        <Link to="/login" className="text-white font-medium">
-          Login
-        </Link>
-      )} */}
+      <Link
+        to="/watchlistcenter"
+        className="text-white float-right font-medium text-lg"
+      >
+        Watchlist
+      </Link>
     </nav>
   );
 };

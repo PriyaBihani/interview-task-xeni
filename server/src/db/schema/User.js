@@ -26,10 +26,6 @@ const UserSchema = new mongoose.Schema(
             type: String,
             required: true,
           },
-          watched: {
-            type: Boolean,
-            default: false,
-          },
         },
       ],
       default: [],

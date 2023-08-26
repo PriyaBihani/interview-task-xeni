@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { User } from "../../../types/user";
 import { serviceDelete, serviceGet, servicePost } from "../../../utils/api";
+import { stat } from "fs";
 
 const initialState: User = {
   userId: "",
@@ -9,7 +10,11 @@ const initialState: User = {
 
 export const getUser: any = createAsyncThunk("user/getUser", async () => {
   try {
-    if (!localStorage["userId"]) {
+    if (
+      !localStorage["userId"] ||
+      localStorage["userId"] === "undefined" ||
+      localStorage["userId"] === "null"
+    ) {
       const response: any = await servicePost("/user/token", {});
       return {
         userId: response.data,
@@ -91,6 +96,16 @@ const userSlice = createSlice({
       })
       .addCase(removeFromWatchlist.fulfilled, (state, action) => {
         state.watchlist = action.payload.watchlist;
+      })
+      .addCase(getUser.rejected, (state, action) => {
+        state.userId = "";
+        state.watchlist = [];
+      })
+      .addCase(addToWatchlist.rejected, (state, action) => {
+        state.watchlist = [];
+      })
+      .addCase(removeFromWatchlist.rejected, (state, action) => {
+        state.watchlist = [];
       });
   },
 });

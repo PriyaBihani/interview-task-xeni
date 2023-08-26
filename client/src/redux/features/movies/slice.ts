@@ -50,10 +50,15 @@ const moviesSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(fetchMovies.fulfilled, (state, action) => {
-      state.movies = [...state.movies, ...action.payload.movies];
-      state.allDataLoaded = !!action.payload.allDataLoaded;
-    });
+    builder
+      .addCase(fetchMovies.fulfilled, (state, action) => {
+        state.movies = [...state.movies, ...action.payload.movies];
+        state.allDataLoaded = !!action.payload.allDataLoaded;
+      })
+      .addCase(fetchMovies.rejected, (state, action) => {
+        state.movies = [];
+        state.allDataLoaded = false;
+      });
   },
 });
 

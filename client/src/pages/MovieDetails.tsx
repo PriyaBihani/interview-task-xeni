@@ -15,7 +15,7 @@ const MovieDetails = () => {
   const [isInWatchlist, setIsInWatchlist] = useState<boolean>(false);
   const [movie, setMovie] = useState<MovieDetailsType | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
-  console.log(isInWatchlist);
+
   useEffect(() => {
     const fetchMovie = async () => {
       try {

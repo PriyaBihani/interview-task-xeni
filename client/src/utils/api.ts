@@ -1,10 +1,32 @@
 import axios, { AxiosResponse } from "axios";
-
-const SERVICE_URL = "http://localhost:8080";
+import toast from "react-hot-toast";
 
 interface ServiceHeaders {
   [key: string]: string;
 }
+
+console.log(process.env.REACT_APP_API_BASE_URL);
+
+const instance = axios.create({
+  baseURL: process.env.REACT_APP_API_BASE_URL,
+  timeout: 5000,
+  headers: {},
+});
+
+instance.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    const status = error.response?.status;
+    if (status === 429) {
+      toast.error(error.response?.data);
+    } else {
+      toast.error(error.response?.data?.message);
+    }
+    return Promise.reject(error);
+  }
+);
 
 export const servicePost = async <T>(
   path: string,
@@ -12,8 +34,8 @@ export const servicePost = async <T>(
   headers: ServiceHeaders = {}
 ) => {
   return new Promise<T>((resolve, reject) => {
-    axios
-      .post<T>(`${SERVICE_URL}${path}`, payload, {
+    instance
+      .post<T>(`${process.env.REACT_APP_API_BASE_URL}${path}`, payload, {
         headers: headers,
       })
       .then(function (response: AxiosResponse<T>) {
@@ -30,8 +52,8 @@ export const serviceGet = async <T>(
   headers: ServiceHeaders = {}
 ) => {
   return new Promise<T>((resolve, reject) => {
-    axios
-      .get<T>(`${SERVICE_URL}${path}`, {
+    instance
+      .get<T>(`${process.env.REACT_APP_API_BASE_URL}${path}`, {
         headers: headers,
       })
       .then(function (response: AxiosResponse<T>) {
@@ -49,8 +71,8 @@ export const servicePatch = async <T>(
   headers: ServiceHeaders = {}
 ) => {
   return new Promise<T>((resolve, reject) => {
-    axios
-      .patch<T>(`${SERVICE_URL}${path}`, payload, {
+    instance
+      .patch<T>(`${process.env.REACT_APP_API_BASE_URL}${path}`, payload, {
         headers: headers,
       })
       .then(function (response: AxiosResponse<T>) {
@@ -68,8 +90,8 @@ export const servicePut = async <T>(
   headers: ServiceHeaders = {}
 ) => {
   return new Promise<T>((resolve, reject) => {
-    axios
-      .put<T>(`${SERVICE_URL}${path}`, payload, {
+    instance
+      .put<T>(`${process.env.REACT_APP_API_BASE_URL}${path}`, payload, {
         headers: headers,
       })
       .then(function (response: AxiosResponse<T>) {
@@ -86,8 +108,8 @@ export const serviceDelete = async <T>(
   headers: ServiceHeaders = {}
 ) => {
   return new Promise<T>((resolve, reject) => {
-    axios
-      .delete<T>(`${SERVICE_URL}${path}`, {
+    instance
+      .delete<T>(`${process.env.REACT_APP_API_BASE_URL}${path}`, {
         headers: headers,
       })
       .then(function (response: AxiosResponse<T>) {

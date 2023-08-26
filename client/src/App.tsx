@@ -1,15 +1,17 @@
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { Route, Routes } from "react-router";
 import { BrowserRouter as Router } from "react-router-dom";
 import Home from "./pages/Home";
 import MovieDetails from "./pages/MovieDetails";
 import WatchlistCenter from "./pages/WatchlistCenter";
 import Navbar from "./components/Navbar";
-import { useEffect } from "react";
-import { getToken } from "./redux/features/user/slice";
+import { getUser } from "./redux/features/user/slice";
 
 function App() {
+  const dispatch = useDispatch();
   useEffect(() => {
-    getToken();
+    dispatch(getUser());
   }, []);
   return (
     <Router>

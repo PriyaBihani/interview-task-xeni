@@ -1,11 +1,11 @@
 import { v4 as uuidv4 } from "uuid";
-import WatchList from "../db/schema/User";
+import { User } from "../db";
 
 export const createToken = async (req, res) => {
   try {
     const userId = uuidv4();
-    const watchlist = new WatchList({ userId });
-    await watchlist.save();
+    const user = new User({ userId });
+    await user.save();
     res.status(200).json({
       message: "Token created",
       success: true,

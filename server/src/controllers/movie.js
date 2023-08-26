@@ -48,7 +48,7 @@ export const getMovie = async (req, res) => {
     };
     const url = `${BASE_URL}/movie/${id}`;
     const response = await axios.get(url, { params: queryParams });
-    console.log(response);
+
     res.status(200).json({
       message: "Movies fetched successfully",
       success: true,

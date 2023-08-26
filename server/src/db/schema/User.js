@@ -18,13 +18,17 @@ const UserSchema = new mongoose.Schema(
             type: String,
             required: true,
           },
-          releaseYear: {
+          releaseDate: {
             type: String,
             required: true,
           },
           posterUrl: {
             type: String,
             required: true,
+          },
+          watched: {
+            type: Boolean,
+            default: false,
           },
         },
       ],
@@ -36,7 +40,6 @@ const UserSchema = new mongoose.Schema(
 
 UserSchema.statics.exists = async function (userId) {
   try {
-    console.log("Hy", userId);
     const user = await this.findOne({ userId: userId });
     if (!user) throw new Error("User does not exists");
     return user;

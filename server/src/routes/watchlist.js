@@ -22,7 +22,7 @@ router.post(
   param("userId").custom(async (userId) => await User.exists(userId)),
   body("movieId").trim().not().isEmpty(),
   body("title").trim().not().isEmpty(),
-  body("releaseYear").trim().not().isEmpty(),
+  body("releaseDate").trim().not().isEmpty(),
   body("posterUrl").trim().not().isEmpty(),
   expressValidator,
   addToWatchlist

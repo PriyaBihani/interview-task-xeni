@@ -1,60 +1,21 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router";
+import { useDispatch, useSelector } from "react-redux";
 import { serviceGet } from "../utils/api";
-
-interface Movie {
-  adult: boolean;
-  backdropPath: string;
-  belongsToCollection: {
-    id: number;
-    name: string;
-    posterPath: string;
-    backdropPath: string;
-  };
-  budget: number;
-  genres: {
-    id: number;
-    name: string;
-  }[];
-  homepage: string;
-  id: number;
-  imdbId: string;
-  originalLanguage: string;
-  originalTitle: string;
-  overview: string;
-  popularity: number;
-  posterPath: string;
-  productionCompanies: {
-    id: number;
-    logoPath: string;
-    name: string;
-    originCountry: string;
-  }[];
-  productionCountries: {
-    iso31661: string;
-    name: string;
-  }[];
-  releaseDate: string;
-  revenue: number;
-  runtime: number;
-  spokenLanguages: {
-    englishName: string;
-    iso6391: string;
-    name: string;
-  }[];
-  status: string;
-  tagline: string;
-  title: string;
-  video: boolean;
-  voteAverage: number;
-  voteCount: number;
-}
+import {
+  addToWatchlist,
+  removeFromWatchlist,
+} from "../redux/features/user/slice";
+import { MovieDetails as MovieDetailsType } from "../types/movies";
 
 const MovieDetails = () => {
-  const [movie, setMovie] = useState<Movie | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
   const { id } = useParams();
-
+  const dispatch = useDispatch();
+  const watchlist = useSelector((state: any) => state.user.watchlist);
+  const [isInWatchlist, setIsInWatchlist] = useState<boolean>(false);
+  const [movie, setMovie] = useState<MovieDetailsType | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  console.log(isInWatchlist);
   useEffect(() => {
     const fetchMovie = async () => {
       try {
@@ -123,6 +84,28 @@ const MovieDetails = () => {
     fetchMovie();
   }, []);
 
+  useEffect(() => {
+    if (movie && watchlist) {
+      console.log(watchlist);
+      setIsInWatchlist(!!watchlist.find((item: any) => item.id == movie.id));
+    }
+  }, [movie, watchlist]);
+
+  const handleAddToWatchlist = async (movie: MovieDetailsType) => {
+    await dispatch(
+      addToWatchlist({
+        title: movie.title,
+        movieId: movie.id,
+        releaseDate: movie.releaseDate,
+        posterUrl: movie.posterPath,
+      })
+    );
+  };
+
+  const handleRemoveFromWatchlist = async (movieId: number) => {
+    await dispatch(removeFromWatchlist(movieId));
+  };
+
   if (!movie) {
     return (
       <div className="flex justify-center items-center h-screen">
@@ -153,6 +136,21 @@ const MovieDetails = () => {
             <span className="text-gray-700 font-bold text-2xl title text-center">
               {movie.title}
             </span>
+            {isInWatchlist ? (
+              <button
+                className="float-right bg-blue-500 text-white font-bold py-2 px-4 rounded-lg"
+                onClick={() => handleRemoveFromWatchlist(movie.id)}
+              >
+                Remove from Watchlist
+              </button>
+            ) : (
+              <button
+                className="float-right bg-blue-500 text-white font-bold py-2 px-4 rounded-lg"
+                onClick={() => handleAddToWatchlist({ ...movie })}
+              >
+                Add to Watchlist
+              </button>
+            )}
           </div>
           <div className="mt-4">
             <span className="text-gray-700 font-bold text-lg">

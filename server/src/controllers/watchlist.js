@@ -20,16 +20,26 @@ export const getWatchlist = async (req, res) => {
 export const addToWatchlist = async (req, res) => {
   try {
     const { userId } = req.params;
-    const { movieId, title, releaseYear, posterUrl } = req.body;
+    const { movieId, title, releaseDate, posterUrl } = req.body;
     const movie = {
       id: movieId,
       title,
-      releaseYear,
+      releaseDate,
       posterUrl,
     };
 
+    const user = await User.findOne({ userId });
+    const movieExists = user.movies.some((m) => m.id === Number(movieId));
+    if (movieExists) {
+      return res.status(400).json({
+        message: "Movie already in watchlist",
+        success: false,
+        watchlist: user.movies,
+      });
+    }
+
     const watchlist = await User.findOneAndUpdate(
-      { userId, "movies.id": { $ne: movieId } },
+      { userId },
       { $addToSet: { movies: movie } },
       { new: true }
     );
@@ -37,7 +47,7 @@ export const addToWatchlist = async (req, res) => {
     res.status(201).json({
       message: "Movie added to watchlist",
       success: true,
-      data: watchlist,
+      data: watchlist.movies || [],
     });
   } catch (error) {
     res.status(500).json({

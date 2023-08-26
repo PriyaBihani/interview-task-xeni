@@ -37,7 +37,7 @@ const MovieTileView: React.FC<MovieTileViewProps> = ({
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
       {movies.map((movie, index) => (
-        <Link to={`/movies/${movie.id}`}>
+        <Link to={`/movies/${movie.id}`} key={movie.id}>
           <div
             key={movie.id}
             ref={index === movies.length - 1 ? lastMovieRef : undefined}

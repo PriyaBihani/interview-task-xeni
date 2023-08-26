@@ -9,7 +9,7 @@ const WatchlistCenter = () => {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
       {movies.map((movie: any, index: number) => (
-        <Link to={`/movies/${movie.id}`}>
+        <Link to={`/movies/${movie.id}`} key={movie.id}>
           <div key={movie.id} className="m-6">
             <MovieCard
               movie={{

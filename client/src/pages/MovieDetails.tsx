@@ -185,8 +185,10 @@ const MovieDetails = () => {
               Production Countries:
             </span>
             <ul className="list-disc list-inside">
-              {movie.productionCountries.map((country) => (
-                <li className="text-lg">{country.name}</li>
+              {movie.productionCountries.map((country, index) => (
+                <li key={country.name + index} className="text-lg">
+                  {country.name}
+                </li>
               ))}
             </ul>
           </div>
@@ -195,8 +197,10 @@ const MovieDetails = () => {
               Spoken Languages:
             </span>
             <ul className="list-disc list-inside">
-              {movie.spokenLanguages.map((language) => (
-                <li className="text-lg">{language.name}</li>
+              {movie.spokenLanguages.map((language, index) => (
+                <li key={language.name + index} className="text-lg">
+                  {language.name}
+                </li>
               ))}
             </ul>
           </div>

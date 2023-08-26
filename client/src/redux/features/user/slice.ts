@@ -9,7 +9,7 @@ const initialState: User = {
 
 export const getUser: any = createAsyncThunk("user/getUser", async () => {
   try {
-    if (!!!localStorage["userId"]) {
+    if (!localStorage["userId"]) {
       const response: any = await servicePost("/user/token", {});
       return {
         userId: response.data,

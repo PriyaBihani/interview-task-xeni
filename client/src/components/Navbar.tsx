@@ -11,7 +11,7 @@ const Navbar: React.FC = () => {
         to="/watchlistcenter"
         className="text-white float-right font-medium text-lg"
       >
-        Watchlist
+        Watchlist Center
       </Link>
     </nav>
   );

@@ -7,3 +7,15 @@ export const createToken = (req, res) => {
     data: uuidv4(),
   });
 };
+
+export const getWatchlist = (req, res) => {
+  console.log("getWatchlist");
+};
+
+export const addToWatchlist = (req, res) => {
+  console.log("addToWatchlist");
+};
+
+export const removeFromWatchlist = (req, res) => {
+  console.log("removeFromWatchlist");
+};

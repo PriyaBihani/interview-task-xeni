@@ -3,9 +3,11 @@ dotenv.config("../.env");
 
 import cors from "cors";
 import express from "express";
+import { connectDB } from "./utils/db.utils.js";
 import movieRouter from "./routes/movie.js";
 import userRouter from "./routes/user.js";
 const app = express();
+connectDB();
 
 app.use(cors());
 app.use(express.json());
